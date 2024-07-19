@@ -75,7 +75,7 @@ export default function App() {
     try {
     setIsLoading(true)
     setError('')
-    const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`);
+    const res = await fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=${query}`);
     const data = await res.json();
     console.log(data.Search)
     
