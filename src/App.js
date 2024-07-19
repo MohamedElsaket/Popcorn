@@ -250,7 +250,7 @@ const SelectedMovie = ({selected, onBackBtn}) => {
   useEffect(function() {
     async function getMoviesDetails() {
       setIsLoading(true)
-      const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${selected}`);
+      const res = await fetch(`https://www.omdbapi.com/?apikey=${KEY}&i=${selected}`);
       const data = await res.json();
       setMovie(data)
       setIsLoading(false)
