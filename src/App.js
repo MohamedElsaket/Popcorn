@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import StarRating from "./StarRating";
+import styled from "styled-components";
 
 // const tempMovieData = [
 //   {
@@ -99,7 +100,7 @@ export default function App() {
   }, [query])
 
   return (
-    <>
+    <div>
       <Navbar>
         <Logo />
         <Search query={query} setQuery={setQuery} />
@@ -121,14 +122,13 @@ export default function App() {
           </>}
         </Box>
       </Main>
-      <Footer />
-    </>
+    </div>
   );
 }
 
 const Loading = () => {
   return ( 
-    <p className="loader"> loading... </p>
+    <p className="loader text-5xl text-center pt-16"> loading... </p>
    );
 }
 
@@ -142,7 +142,7 @@ const ErrorMessage = ({message}) => {
   
 const Navbar = ({children}) => { 
   return ( 
-    <nav className="nav-bar">
+    <nav className="nav-bar grid grid-cols-12 items-center justify-between bg-[#6741d9] rounded-xl py-6 px-16">
       {children}
     </nav>
    );
@@ -150,17 +150,17 @@ const Navbar = ({children}) => {
   
 const Logo = () => {
   return ( 
-    <div className="logo">
-    <span role="img">☕</span>
-    <h1>Popcorn</h1>
-  </div>
+    <div className="logo col-start-1 col-span-3 flex gap-3 items-center">
+      <span role="img" className="text-5xl">☕</span>
+      <h1 className="text-slate-50 text-4xl">Popcorn</h1>
+    </div>
   );
 }
   
   const Search = ({query, setQuery}) => {
   return ( 
     <input
-    className="search"
+    className="search sm:col-end-10 col-span-5 col-end-13 py-4 px-4 rounded-xl bg-[#7950f2] w-full placeholder:text-3xl outline-none text-3xl"
     type="text"
     placeholder="Search movies..."
     value={query}
@@ -171,7 +171,7 @@ const Logo = () => {
 
 const NumResault = ({movies}) => {
   return ( 
-    <p className="num-results">
+    <p className="num-results col-end-13 col-span-3 text-end text-3xl m-0 hidden sm:block">
       Found <strong>{movies.length}</strong> results
     </p>
    );
@@ -179,7 +179,7 @@ const NumResault = ({movies}) => {
 
 const Main = ({children}) => {
   return ( 
-    <main className="main">    
+    <main className="main h-[580px] grid grid-cols-12 p-8 gap-10 justify-center">    
       {children}
     </main>
    );
@@ -189,9 +189,9 @@ const Box = ({children}) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return ( 
-    <div className="box">
+    <div className="box bg-[#2b3035] overflow-scroll h-[350px] sm:h-full p-8 rounded-2xl col-start-1 col-span-12 sm:col-span-6 relative">
           <button
-            className="btn-toggle"
+            className="btn-toggle bg-[#212529] rounded-full w-[30px] h-[30px] absolute right-8"
             onClick={() => setIsOpen((open) => !open)}
           >
             {isOpen ? "–" : "+"}
@@ -207,7 +207,7 @@ const Box = ({children}) => {
 
 const MovieList = ({movies, onSelectMovie}) => {
   return ( 
-    <ul className="list list-movies">
+    <ul className="list list-movies rounded-2xl p-0">
       {movies?.map((movie) => (
         <Movie key={movie.imdbID} movie={movie} onSelectMovie={onSelectMovie} />
       ))}
@@ -217,14 +217,16 @@ const MovieList = ({movies, onSelectMovie}) => {
 
 const Movie = ({movie, onSelectMovie}) => {
   return ( 
-    <li onClick={() => onSelectMovie(movie.imdbID)}>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <h3>{movie.Title}</h3>
-      <div>
-        <p>
-          <span>🗓</span>
-          <span>{movie.Year}</span>
-        </p>
+    <li className="p-8 hover:bg-[#343a40] duration-300 border-b-2 rounded-2xl cursor-pointer border-[#343a40]" onClick={() => onSelectMovie(movie.imdbID)}>
+      <div className="flex gap-10 items-center">
+        <img src={movie.Poster} alt={`${movie.Title} poster`} className="max-h-[100px] w-[70px]" />
+        <div>
+          <h3>{movie.Title}</h3>
+          <p>
+            <span>🗓</span>
+            <span>{movie.Year}</span>
+          </p>
+        </div>
       </div>
     </li>
    );
@@ -261,20 +263,22 @@ const SelectedMovie = ({selected, onBackBtn}) => {
   return ( <>
     {isLoading ? <Loading /> : <div className="details">
       <header>
-        <button onClick={onBackBtn} className="btn-back">&larr;</button>
-        <img src={poster} alt={`Poster of ${movie} movie`} />
-        <div className="details-overview">
-          <h2>{title}</h2>
-          <p>
-            {released} &bull; {runtime}
-          </p>
-          <p>{genre}</p>
-          <p><span>⭐</span>{imdbRating} IMDB Rating</p>
+        <button onClick={onBackBtn} className="btn-back bg-slate-50 rounded-full w-[25px] h-[25px] items-center absolute border-1 border-slate-950 font-extrabold text-slate-950 text-2xl">&larr;</button>
+        <div className="flex flex-col sm:flex-row gap-4 md:gap-16 mb-8 items-center">
+          <img src={poster} alt={`Poster of ${movie} movie`} className="h-[250px] w-[170px] rounded-2xl" />
+          <div className="details-overview text-2xl leading-loose sm:pt-16">
+            <h2 className="text-4xl">{title}</h2>
+            <p>
+              {released} &bull; {runtime}
+            </p>
+            <p>{genre}</p>
+            <p><span>⭐</span>{imdbRating} IMDB Rating</p>
+          </div>
         </div>
       </header>
       <section>
         <StarRating />
-        <p>
+        <p className="mt-8">
           <em>{plot}</em>
         </p>
         <p>Starring {actors}</p>
@@ -291,26 +295,26 @@ const Summary = ({watched}) => {
   const avgRuntime = average(watched.map((movie) => movie.runtime));
 
   return ( 
-    <div className="summary">
-    <h2>Movies you watched</h2>
-    <div>
-      <p>
-        <span>#️⃣</span>
-        <span>{watched.length} movies</span>
-      </p>
-      <p>
-        <span>⭐️</span>
-        <span>{avgImdbRating}</span>
-      </p>
-      <p>
-        <span>🌟</span>
-        <span>{avgUserRating}</span>
-      </p>
-      <p>
-        <span>⏳</span>
-        <span>{avgRuntime} min</span>
-      </p>
-    </div>
+    <div className="summary bg-[#343a40] p-4 rounded-2xl shadow-zinc-950">
+      <h2 className="uppercase">Movies you watched</h2>
+      <div className="flex text-2xl justify-around items-center py-4">
+        <p className="flex gap-3">
+          <span>#️⃣</span>
+          <span>{watched.length} movies</span>
+        </p>
+        <p>
+          <span>⭐️</span>
+          <span>{avgImdbRating}</span>
+        </p>
+        <p>
+          <span>🌟</span>
+          <span>{avgUserRating}</span>
+        </p>
+        <p>
+          <span>⏳</span>
+          <span>{avgRuntime} min</span>
+        </p>
+      </div>
   </div>
    );
 }
@@ -340,12 +344,4 @@ const WatchedList = ({watched}) => {
           ))}
         </ul>
    );
-}
-
-const Footer = () => {
-  return ( 
-  <div className="footer">
-    <p>• It Looks Better in Large Screen</p>
-  </div>
-  );
 }

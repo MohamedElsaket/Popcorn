@@ -8,13 +8,13 @@ const StarRating = ({starNumb= 10, size= 20, color= '#FFD700'}) => {
     }
 
     return ( <>
-        <div className="rating" style={{color: color, fontSize:`${size}px`}}>
-        {Array.from({length: starNumb}, (_, i) =>  
-        {const starVal = i + 1;
-        return (
-        <Star starVal={starVal} selectedStars={selectedStars} onclickStart={handleClickStar} />
-        )})}
-        <span> {selectedStars === 0 ? '-' : selectedStars} / {starNumb} </span>
+        <div className="rating bg-[#343a40] p-8 rounded-2xl m-auto w-fit" style={{color: color, fontSize:`${size}px`}}>
+            {Array.from({length: starNumb}, (_, i) =>  
+            {const starVal = i + 1;
+            return (
+            <Star starVal={starVal} selectedStars={selectedStars} onclickStart={handleClickStar} />
+            )})}
+            <span> {selectedStars === 0 ? '-' : selectedStars} / {starNumb} </span>
         </div>
     </> );
 }
